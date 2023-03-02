@@ -19,6 +19,10 @@ public class DiscordBot {
         priceTargets.add(new PriceTarget("Granite Face Grinder",8000));
         priceTargets.add(new PriceTarget("Fungus Covered Scale Tunic", 40000));
         priceTargets.add(new PriceTarget("Fungi Covered Great Staff", 8000));
+        priceTargets.add(new PriceTarget("Rune Etched Icewurm Fang", 5000));
+        priceTargets.add(new PriceTarget("Orc Fang Earring"));
+        priceTargets.add(new PriceTarget("Spell: Torpor"));
+        priceTargets.add(new PriceTarget("Spell: Malo"));
     }
 
 
@@ -26,15 +30,13 @@ public class DiscordBot {
         for(PriceTarget t : priceTargets){
             final SellerMatchInfo seller = t.search(line);
             if(seller != null) {
-                System.out.println(seller.toString());
+                System.out.println(seller);
                 DiscordBot.notify(seller);
             }
         }
 
     }
     protected static void notify(SellerMatchInfo seller) {
-
-        initDiscord();
 
         discord.getTextChannelsByName(Constants.channel, true)
                 .stream()
@@ -46,7 +48,7 @@ public class DiscordBot {
     }
 
 
-    private static void initDiscord() {
+    protected static void initDiscord() {
         if(discord == null) {
             discord = JDABuilder.createLight(Constants.token).build();
             try {
@@ -69,7 +71,7 @@ public class DiscordBot {
                         final String msg = event.getMessage().getContentDisplay();
                         final String[] msgWords = msg.split("\"");
 
-                        switch(msgWords[0].trim()) {
+                        switch(msgWords[0].trim().toLowerCase()) {
                             case "help":
                             case "?":
                                 respond(getHelpMessage(), event);

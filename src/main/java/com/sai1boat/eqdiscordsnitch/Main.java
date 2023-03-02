@@ -19,9 +19,18 @@ public class Main {
         BufferedReader reader;
         try {
             reader = new BufferedReader(new FileReader(inputFile));
+            int linesSkipped = 0;
+            while(reader.readLine()!=null)
+                linesSkipped += 1;
+            System.out.println("Skipped ahead "+linesSkipped+" lines.");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
+        } catch (IOException ee ) {
+            throw new RuntimeException(ee);
         }
+
+        DiscordBot.initDiscord();
+
         String line;
         while (keepReading) {
             try {
