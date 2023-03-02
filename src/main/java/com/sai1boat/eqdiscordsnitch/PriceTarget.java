@@ -19,7 +19,7 @@ public class PriceTarget {
     protected Pattern sellerNamePattern;
     protected Pattern timestampPattern;
 
-    public PriceTarget(String itemName, int plat) {
+    public PriceTarget(String itemName, Integer plat) {
         this._itemName = itemName;
         this._desiredPrice = plat;
         init();
@@ -52,31 +52,34 @@ public class PriceTarget {
             sellerName = sellerNameMatcher.group();
         }
 
+        boolean targetPriceMet = false;
+        String sellerPrice = null;
 
-        if (m0.find()) {
+        if(this._desiredPrice == null) {
+             targetPriceMet = true;
+        }
+
+         if (m0.find()) {
             String kp= m0.group();
-            Integer pkFloat = (int)(Float.parseFloat(kp)*1000);
-            Boolean targetMet = false;
-            if(this._desiredPrice >= pkFloat) {
-                targetMet = true;
-                return new SellerMatchInfo(sellerName, pkFloat.toString(), targetMet,this);
+            sellerPrice = ((int)(Float.parseFloat(kp)*1000))+"";
+            if(this._desiredPrice!=null
+                    && this._desiredPrice >= Integer.parseInt(sellerPrice)) {
+                targetPriceMet = true;
             }
-
-        }
-        else if (m1.find()) {
+        } else if (m1.find()) {
             String pp = m1.group();
-            Integer pkInt = Integer.parseInt(pp);
-            Boolean targetMet = false;
-            if(this._desiredPrice >= pkInt) {
-                targetMet = true;
-                return new SellerMatchInfo(sellerName, pp, targetMet,this);
+            sellerPrice = Integer.parseInt(pp)+"";
+            if(this._desiredPrice!=null &&
+                    this._desiredPrice >= Integer.parseInt(sellerPrice)) {
+                targetPriceMet = true;
             }
 
         }
-        else if (this._desiredPrice==null){
-            return new SellerMatchInfo(sellerName, null, true, this);
+
+        if (targetPriceMet) {
+            return new SellerMatchInfo(sellerName, sellerPrice, this);
         }
-        return null;
+        else return null;
     }
 
     public SellerMatchInfo search(String line) {

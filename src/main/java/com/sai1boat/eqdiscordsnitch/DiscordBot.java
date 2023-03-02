@@ -80,7 +80,7 @@ public class DiscordBot {
                                 break;
                             case "add":
                                 if (msgWords.length == 2) {
-                                    if (priceTargets.add(new PriceTarget(msgWords[1], Integer.MAX_VALUE))) {
+                                    if (priceTargets.add(new PriceTarget(msgWords[1], null))) {
                                         respond("Added item " + msgWords[1] + " to price targets.",
                                                 event);
                                     } else {
@@ -89,8 +89,14 @@ public class DiscordBot {
                                     }
                                 } else if (msgWords.length == 3) {
 
-                                    priceTargets.add(new PriceTarget(msgWords[1],
-                                            Integer.parseInt(msgWords[2].trim())));
+                                    if(priceTargets.add(new PriceTarget(msgWords[1],
+                                            Integer.parseInt(msgWords[2].trim())))) {
+                                        respond("Added item " + msgWords[1] + " to price targets.",
+                                                event);
+                                    } else {
+                                        respond("Could not add item " + msgWords[1] + " to price targets.",
+                                                event);
+                                    }
                                 } else {
                                     respond("add command requires 1 or 2 parameters but no more or less.",
                                             event);
@@ -125,7 +131,10 @@ public class DiscordBot {
                     private String getTargetsMessage() {
                         StringBuilder sb = new StringBuilder();
                         for (PriceTarget p : priceTargets) {
-                            sb.append("WTB "+p._itemName+" for less than "+p._desiredPrice+"p\n");
+                            if(p._desiredPrice!=null)
+                                sb.append("Looking for item "+p._itemName+" for less than "+p._desiredPrice+"p\n");
+                            else
+                                sb.append("Looking for item "+p._itemName+"\n");
                         }
                         return sb.toString();
                     }
