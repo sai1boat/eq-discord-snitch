@@ -3,16 +3,13 @@ package com.sai1boat.eqdiscordsnitch;
 public class SellerMatchInfo {
 
     protected PriceTarget _target;
-    protected Boolean _targetMet;
     protected String _sellerName;
-
     protected String _sellerPrice;
 
-    public SellerMatchInfo (String sellerName,  String sellerPrice, Boolean targetMet, PriceTarget target) {
+    public SellerMatchInfo (String sellerName, String sellerPrice, PriceTarget target) {
         this._sellerName = sellerName;
         this._sellerPrice = sellerPrice;
         this._target = target;
-        this._targetMet = targetMet;
     }
 
 
