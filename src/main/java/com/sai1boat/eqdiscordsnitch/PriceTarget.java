@@ -82,17 +82,25 @@ public class PriceTarget {
     public SellerMatchInfo search(String line) {
 
         int index;
-        SellerMatchInfo pp;
         if((index = line.toLowerCase().indexOf(_itemNameLowerCase))>=0) {
             int moneyStartIndex = index + _itemName.length();
-
-            pp = searchForPlatStartingAtPosition(line, moneyStartIndex);
-
-//            Integer sellerPrice = pp._sellerPrice!=null?Integer.parseInt(pp._sellerPrice) : 0;
-//            Integer targetPrice = this._desiredPrice!=null? this._desiredPrice : Integer.MAX_VALUE;
-
-            return pp;
+            return searchForPlatStartingAtPosition(line, moneyStartIndex);
          }
         return null;
+    }
+
+    public boolean equals (Object o2) {
+        if (o2 == null)
+            return false;
+        else if (o2 instanceof PriceTarget == false)
+            return false;
+        else {
+            return ((PriceTarget) o2)._itemName.equals(this._itemName);
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        return this._itemName.hashCode();
     }
 }

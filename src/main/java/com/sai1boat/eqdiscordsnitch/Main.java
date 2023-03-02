@@ -5,21 +5,6 @@ import java.io.*;
 
 public class Main {
 
-    static PriceTarget[] priceTargets = new PriceTarget[]{ new PriceTarget("Granite Face Grinder",8000),
-                                     new PriceTarget("Fungus Covered Scale Tunic", 40000),
-                                     new PriceTarget("Fungi Covered Great Staff", 8000)};
-
-
-    private static void searchForTargets(String line) {
-        for(PriceTarget t : priceTargets){
-            final SellerMatchInfo seller = t.search(line);
-            if(seller != null) {
-                System.out.println(seller.toString());
-                DiscordBot.notify(seller);
-            }
-        }
-
-    }
 
     public static void main(String[] args) {
         final String inputFile;
@@ -53,7 +38,7 @@ public class Main {
                 }
             }
             else {
-                searchForTargets(line);
+                DiscordBot.searchForTargets(line);
             }
         }
     }
